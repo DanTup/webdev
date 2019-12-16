@@ -241,11 +241,11 @@ class DevHandler {
       _logWriter(Level.INFO, 'INJ-DONE: 1');
       _injectedConnections.remove(injectedConnection);
       if (appConnection != null) {
-        _logWriter(Level.INFO, 'INJ-DONE: 2');
+        _logWriter(Level.INFO, 'INJ-DONE: 2.1');
         _appConnectionByAppId.remove(appConnection.request.appId);
         var services = await _servicesByAppId[appConnection.request.appId];
         if (services != null) {
-          _logWriter(Level.INFO, 'INJ-DONE: 3');
+          _logWriter(Level.INFO, 'INJ-DONE: 3.1');
           if (services.connectedInstanceId == null ||
               services.connectedInstanceId ==
                   appConnection.request.instanceId) {
@@ -255,8 +255,10 @@ class DevHandler {
           }
         } else {
           _logWriter(Level.INFO,
-              'No service for "${appConnection.request.appId}" (there are ${_servicesByAppId.keys.join(', ')})');
+              'INJ-DONE: 3.2: No service for "${appConnection.request.appId}" (there are ${_servicesByAppId.keys.join(', ')})');
         }
+      } else {
+        _logWriter(Level.INFO, 'INJ-DONE: 2.2: No appConnection');
       }
     }));
   }
