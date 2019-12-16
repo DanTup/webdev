@@ -94,10 +94,15 @@ class ExtensionDebugger implements RemoteDebugger {
       }
     }, onError: (e) {
       if (logWriter != null) {
-        logWriter(Level.INFO, '$e');
+        logWriter(Level.INFO, 'Stream error: $e');
       }
       close();
-    }, onDone: close);
+    }, onDone: () {
+      if (logWriter != null) {
+        logWriter(Level.INFO, 'Stream is done!');
+      }
+      close();
+    });
     onScriptParsed.listen((event) {
       _scripts[event.script.scriptId] = event.script;
     });
