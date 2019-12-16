@@ -62,6 +62,9 @@ class ExtensionDebugger implements RemoteDebugger {
   final _scripts = <String, WipScript>{};
 
   ExtensionDebugger(this.logWriter, this.sseConnection) {
+    if (logWriter != null) {
+      logWriter(Level.INFO, 'LOGGING IS WORKING!');
+    }
     sseConnection.stream.listen((data) {
       var message = serializers.deserialize(jsonDecode(data));
       if (message is ExtensionResponse) {
