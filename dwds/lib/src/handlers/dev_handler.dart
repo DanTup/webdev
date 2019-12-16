@@ -366,6 +366,7 @@ class DevHandler {
 
   /// Starts a [DebugService] for Dart Debug Extension.
   void _startExtensionDebugService() async {
+    // This code here waits for the first connection to the debug service
     var extensionDebugger = await _extensionBackend.extensionDebugger;
     // Waits for a `DevToolsRequest` to be sent from the extension background
     // when the extension is clicked.
@@ -379,6 +380,8 @@ class DevHandler {
           await _servicesByAppId.putIfAbsent(devToolsRequest.appId, () async {
         var debugService = await DebugService.start(
           _hostname,
+          // The connection is passed down into DebugService, making it hard to
+          // replace later if it disconnects and then is reconnected.
           extensionDebugger,
           extensionDebugger.executionContext,
           devToolsRequest.tabUrl,
@@ -400,6 +403,9 @@ class DevHandler {
         unawaited(appServices.chromeProxyService.remoteDebugger.onClose.first
             .whenComplete(() {
           appServices.chromeProxyService.destroyIsolate();
+          // This code here cleans up when that first connection to the debug
+          // service is closed (eg. after 60s timeout), which then prevents the
+          // client retry from reconnecting.
           appServices.close();
           _servicesByAppId.remove(devToolsRequest.appId);
           _logWriter(

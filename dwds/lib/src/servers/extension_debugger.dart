@@ -63,6 +63,8 @@ class ExtensionDebugger implements RemoteDebugger {
   final _scripts = <String, WipScript>{};
 
   ExtensionDebugger(this.logWriter, this.sseConnection) {
+    // This constructor takes in a single SseConnection which doesn't appear to
+    // support reconnects (its sink is connected to the underlying request).
     if (logWriter != null) {
       logWriter(Level.INFO, 'LOGGING IS WORKING!');
     }
