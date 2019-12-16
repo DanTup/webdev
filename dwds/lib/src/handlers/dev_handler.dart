@@ -253,6 +253,9 @@ class DevHandler {
             services.connectedInstanceId = null;
             services.chromeProxyService?.destroyIsolate();
           }
+        } else {
+          _logWriter(Level.INFO,
+              'No service for "${appConnection.request.appId}" (there are ${_servicesByAppId.keys.join(', ')})');
         }
       }
     }));
