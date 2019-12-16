@@ -15,7 +15,8 @@ import 'package:dwds/src/debugging/remote_debugger.dart';
 import 'package:dwds/src/services/chrome_proxy_service.dart';
 import 'package:logging/logging.dart';
 import 'package:sse/server/sse_handler.dart';
-import 'package:webkit_inspection_protocol/webkit_inspection_protocol.dart';
+import 'package:webkit_inspection_protocol/webkit_inspection_protocol.dart'
+    hide StackTrace;
 
 /// A remote debugger backed by the Dart Debug Extension
 /// with an SSE connection.
@@ -135,6 +136,8 @@ class ExtensionDebugger implements RemoteDebugger {
 
   @override
   void close() => _closed ??= () {
+        logWriter(Level.INFO,
+            'ExtensionDebugger.close was called! ${StackTrace.current}');
         _closeController.add(WipEvent({}));
         return Future.wait([
           sseConnection.sink.close(),

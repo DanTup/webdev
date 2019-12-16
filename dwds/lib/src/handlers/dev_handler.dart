@@ -189,7 +189,7 @@ class DevHandler {
           _servicesByAppId.remove(appConnection.request.appId);
           _logWriter(
               Level.INFO,
-              'Stopped debug service on '
+              'Stopped debug service on (1) because remoteDebugger.onClose fired '
               'ws://${debugService.hostname}:${debugService.port}\n');
         }));
         return appServices;
@@ -395,7 +395,7 @@ class DevHandler {
           _servicesByAppId.remove(devToolsRequest.appId);
           _logWriter(
               Level.INFO,
-              'Stopped debug service on '
+              'Stopped debug service on (2) because remoteDebugger.onClose fired '
               '${appServices.debugService.uri}\n');
         }));
         extensionDebugConnections.add(DebugConnection(appServices));
