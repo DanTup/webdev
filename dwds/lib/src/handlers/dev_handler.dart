@@ -238,14 +238,18 @@ class DevHandler {
     });
 
     unawaited(injectedConnection.sink.done.then((_) async {
+      _logWriter(Level.INFO, 'INJ-DONE: 1');
       _injectedConnections.remove(injectedConnection);
       if (appConnection != null) {
+        _logWriter(Level.INFO, 'INJ-DONE: 2');
         _appConnectionByAppId.remove(appConnection.request.appId);
         var services = await _servicesByAppId[appConnection.request.appId];
         if (services != null) {
+          _logWriter(Level.INFO, 'INJ-DONE: 3');
           if (services.connectedInstanceId == null ||
               services.connectedInstanceId ==
                   appConnection.request.instanceId) {
+            _logWriter(Level.INFO, 'INJ-DONE: 4');
             services.connectedInstanceId = null;
             services.chromeProxyService?.destroyIsolate();
           }
