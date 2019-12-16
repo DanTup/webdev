@@ -22,7 +22,7 @@ ExtensionDebugger extensionDebugger;
 void main() async {
   setUp(() async {
     connection = FakeSseConnection();
-    extensionDebugger = ExtensionDebugger(connection);
+    extensionDebugger = ExtensionDebugger(null, connection);
   });
 
   tearDown(() {

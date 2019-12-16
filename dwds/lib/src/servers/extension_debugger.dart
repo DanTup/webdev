@@ -9,9 +9,11 @@ import 'dart:convert';
 import 'package:dwds/data/devtools_request.dart';
 import 'package:dwds/data/extension_request.dart';
 import 'package:dwds/data/serializers.dart';
+import 'package:dwds/dwds.dart';
 import 'package:dwds/src/debugging/execution_context.dart';
 import 'package:dwds/src/debugging/remote_debugger.dart';
 import 'package:dwds/src/services/chrome_proxy_service.dart';
+import 'package:logging/logging.dart';
 import 'package:sse/server/sse_handler.dart';
 import 'package:webkit_inspection_protocol/webkit_inspection_protocol.dart';
 
@@ -21,6 +23,7 @@ class ExtensionDebugger implements RemoteDebugger {
   /// A connection between the debugger and the background of
   /// Dart Debug Extension
   final SseConnection sseConnection;
+  final LogWriter logWriter;
 
   /// A map from id to a completer associated with an [ExtensionRequest]
   final _completers = <int, Completer>{};
@@ -58,7 +61,7 @@ class ExtensionDebugger implements RemoteDebugger {
 
   final _scripts = <String, WipScript>{};
 
-  ExtensionDebugger(this.sseConnection) {
+  ExtensionDebugger(this.logWriter, this.sseConnection) {
     sseConnection.stream.listen((data) {
       var message = serializers.deserialize(jsonDecode(data));
       if (message is ExtensionResponse) {
@@ -89,7 +92,10 @@ class ExtensionDebugger implements RemoteDebugger {
         _executionContext = ExecutionContext(message.contextId, this);
         _devToolsRequestController.sink.add(message);
       }
-    }, onError: (_) {
+    }, onError: (e) {
+      if (logWriter != null) {
+        logWriter(Level.INFO, '$e');
+      }
       close();
     }, onDone: close);
     onScriptParsed.listen((event) {

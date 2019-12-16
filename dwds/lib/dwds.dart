@@ -90,7 +90,7 @@ class Dwds {
     String extensionUri;
     ExtensionBackend extensionBackend;
     if (enableDebugExtension) {
-      extensionBackend = await ExtensionBackend.start(hostname);
+      extensionBackend = await ExtensionBackend.start(logWriter, hostname);
       extensionUri = Uri(
               scheme: 'http',
               host: extensionBackend.hostname,
