@@ -30,7 +30,10 @@ dependencies:
   shelf_static: ^0.2.8
   shelf_web_socket: ^0.2.0
   source_maps: ^0.10.0
-  sse: ^3.0.0
+  sse:
+    git:
+      url: https://github.com/DanTup/sse
+      ref: server-reconnects
   vm_service: 1.2.0
   web_socket_channel: ^1.0.0
   webkit_inspection_protocol: '>=0.4.0 <0.6.0'
@@ -49,9 +52,3 @@ dev_dependencies:
   test: ^1.6.0
   uuid: ^2.0.0
   webdriver: ^2.0.0
-
-dependency_overrides:
-  sse:
-    git:
-      url: https://github.com/DanTup/sse
-      ref: server-reconnects

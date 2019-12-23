@@ -14,7 +14,10 @@ dependencies:
   js: ^0.6.1+1
   pedantic: ^1.5.0
   pub_semver: ^1.3.2
-  sse: ^3.0.0
+  sse:
+    git:
+      url: https://github.com/DanTup/sse
+      ref: server-reconnects
 
 dev_dependencies:
   webdev: ^2.0.0
@@ -26,7 +29,3 @@ dependency_overrides:
     path: ../../webdev
   dwds:
     path: ..
-  sse:
-    git:
-      url: https://github.com/DanTup/sse
-      ref: server-reconnects
