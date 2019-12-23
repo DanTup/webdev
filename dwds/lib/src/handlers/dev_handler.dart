@@ -37,7 +37,8 @@ import '../services/debug_service.dart';
 /// opening DevTools.
 class DevHandler {
   StreamSubscription _sub;
-  final SseHandler _sseHandler = SseHandler(Uri.parse(r'/$sseHandler'));
+  final SseHandler _sseHandler = SseHandler(Uri.parse(r'/$sseHandler'),
+      keepAlive: const Duration(seconds: 30));
   final _injectedConnections = Set<SseConnection>();
   final DevTools _devTools;
   final AssetHandler _assetHandler;
@@ -238,7 +239,7 @@ class DevHandler {
     });
 
     unawaited(injectedConnection.sink.done.then((_) async {
-      _logWriter(Level.INFO, 'INJ-DONE: 1');
+      _logWriter(Level.INFO, 'INJ-DONE: 1 injectedConnection sink was done');
       _injectedConnections.remove(injectedConnection);
       if (appConnection != null) {
         _logWriter(Level.INFO, 'INJ-DONE: 2.1');
