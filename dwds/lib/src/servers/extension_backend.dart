@@ -10,10 +10,11 @@ import 'package:http_multi_server/http_multi_server.dart';
 import 'package:shelf/shelf_io.dart';
 import 'package:sse/server/sse_handler.dart';
 
+import '../handlers/socket_connections.dart';
 import 'extension_debugger.dart';
 
-final _sseHandler =
-    SseHandler(Uri.parse('/\$debug'), keepAlive: const Duration(seconds: 30));
+final _sseHandler = SseSocketHandler(
+    SseHandler(Uri.parse('/\$debug'), keepAlive: const Duration(seconds: 30)));
 
 /// A backend for the Dart Debug Extension.
 ///
@@ -40,7 +41,7 @@ class ExtensionBackend {
 
   Future<void> close() => _closed ??= _server.close();
 
-  StreamQueue<SseConnection> connections = _sseHandler.connections;
+  StreamQueue<SocketConnection> connections = _sseHandler.connections;
 
   Future<ExtensionDebugger> get extensionDebugger async =>
       ExtensionDebugger(await connections.next);
