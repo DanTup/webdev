@@ -49,3 +49,7 @@ executables:
 dependency_overrides:
   dwds:
     path: ../dwds
+  sse:
+    git:
+      url: https://github.com/DanTup/sse
+      ref: batch-test

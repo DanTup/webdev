@@ -26,3 +26,7 @@ dependency_overrides:
     path: ../../webdev
   dwds:
     path: ..
+  sse:
+    git:
+      url: https://github.com/DanTup/sse
+      ref: batch-test
